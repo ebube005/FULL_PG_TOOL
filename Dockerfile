@@ -2,7 +2,11 @@ FROM python:3.10-slim
 
 WORKDIR /app
 
+RUN ls -lR /app
+
 COPY . .
+
+RUN ls -lR /app
 
 RUN pip install --no-cache-dir -r backend/requirements.txt
 
