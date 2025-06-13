@@ -8,7 +8,7 @@ COPY . .
 
 RUN ls -lR /app
 
-RUN pip install --no-cache-dir -r backend/requirements.txt
+RUN pip install --no-cache-dir -r backend/Requirements.txt
 
 RUN mkdir -p /app/logs
 
