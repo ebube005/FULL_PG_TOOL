@@ -28,3 +28,4 @@ backend/output
 backend/.venv
 backend/test_audio
 backend/DejaVuSans.ttf
+backend/__pycache__

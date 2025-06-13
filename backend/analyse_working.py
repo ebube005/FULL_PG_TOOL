@@ -1,3 +1,5 @@
+# This file is deprecated. All logic has been refactored into the FastAPI app (main.py) and supporting modules.
+
 import os
 import json
 import pandas as pd

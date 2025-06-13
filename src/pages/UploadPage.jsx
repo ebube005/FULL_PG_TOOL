@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import Header from "../components/Header.jsx";
 import Footer from "../components/Footer.jsx";
@@ -12,7 +12,15 @@ function AudioUploader() {
   const [error, setError] = useState("");
   const fileInputRef = useRef();
   const navigate = useNavigate();
+  const location = useLocation();
   const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+  const targetWord = location.state?.targetWord;
+
+  // Redirect if no target word
+  if (!targetWord) {
+    navigate("/");
+    return null;
+  }
 
   function handleDrop(e) {
     e.preventDefault();
@@ -54,13 +62,14 @@ function AudioUploader() {
     setError("");
     const formData = new FormData();
     formData.append("audioFile", audioFile);
+    formData.append("target_word", targetWord);
     try {
-      const response = await axios.post(`${apiBaseUrl}`, formData, {
+      const response = await axios.post(`${apiBaseUrl}/analyze`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       console.log("Upload response:", response.data);
       sessionStorage.setItem("uploadResult", JSON.stringify(response.data));
-      navigate("/target-word");
+      navigate("/results");
     } catch {
       setError("Upload failed");
     } finally {
@@ -170,7 +179,7 @@ export default function UploadPage() {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
       <Header />
-      <ProgressBar currentStep={1} />
+      <ProgressBar currentStep={2} />
       <main className="flex-1 flex items-center justify-center">
         <AudioUploader />
       </main>
