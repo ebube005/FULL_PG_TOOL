@@ -2,10 +2,9 @@ FROM python:3.10-slim
 
 WORKDIR /app
 
-COPY backend ./backend/
-RUN pip install --no-cache-dir -r backend/requirements.txt
-
 COPY . .
+
+RUN pip install --no-cache-dir -r backend/requirements.txt
 
 RUN mkdir -p /app/logs
 
