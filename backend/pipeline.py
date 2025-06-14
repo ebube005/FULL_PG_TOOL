@@ -68,7 +68,6 @@ async def analyze_audio_and_word(audioFile, target_word):
             logger.error(f"API error {response.status_code}: {response.text}")
             return {"success": False, "error": f"API error {response.status_code}: {response.text}"}
         data = response.json()
-        logger.info(f"Received API response: {data}")
     except Exception as e:
         logger.exception(f"Failed to fetch data: {e}")
         return {"success": False, "error": str(e)}
@@ -98,11 +97,7 @@ async def analyze_audio_and_word(audioFile, target_word):
             "labels": ipa_list,
             "matrix": confusion.values.tolist()
         },
-        "transcription": data.get("transcription"),
-        "duration": data.get("duration"),
-        "segments": data.get("segments", [])
     }
-    logger.info(f"Analysis pipeline result: {result}")
     return result
 
 async def get_word_ipa(target_word):

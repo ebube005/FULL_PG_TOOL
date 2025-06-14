@@ -69,7 +69,7 @@ function AudioUploader() {
       });
       console.log("Upload response:", response.data);
       sessionStorage.setItem("uploadResult", JSON.stringify(response.data));
-      navigate("/results");
+      navigate("/criteria");
     } catch {
       setError("Upload failed");
     } finally {

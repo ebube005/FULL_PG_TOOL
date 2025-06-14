@@ -65,7 +65,39 @@ export default function CriteriaPage() {
   }
 
   function handleNext() {
-    navigate("/results");
+    const values = Object.values(sliders);
+    const uniqueValues = new Set(values);
+
+    if (uniqueValues.size !== values.length) {
+      alert(
+        "Each criterion must have a unique value. Please adjust the sliders so no two are the same."
+      );
+      return;
+    }
+    const ipaStored = sessionStorage.getItem("targetWordIpaResult");
+    const ipa = JSON.parse(ipaStored);
+    fetch("http://localhost:5000/save-rankings", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ sliders, ipa }),
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json(); // Optional: receive message from backend
+        } else {
+          throw new Error("Failed to save rankings");
+        }
+      })
+      .then((data) => {
+        console.log("Saved successfully:", data);
+        navigate("/results");
+      })
+      .catch((err) => {
+        console.error("Error:", err);
+        alert("An error occurred while saving the rankings.");
+      });
   }
 
   return (
