@@ -8,8 +8,8 @@ from collections import Counter
 from sklearn.cluster import AgglomerativeClustering
 import requests
 
-# API_URL = "https://thebickersteth-voxpreference.hf.space"
-API_URL = "http://localhost:8000"
+API_URL = "https://thebickersteth-voxpreference.hf.space"
+# API_URL = "http://localhost:8000"
 logger = logging.getLogger(__name__)
 
 def compute_distance_matrix(words):
@@ -98,6 +98,12 @@ async def analyze_audio_and_word(audioFile, target_word):
             "matrix": confusion.values.tolist()
         },
     }
+    results_path = "../tenents/data/backend_results.json"
+    try:
+        with open(results_path, "w", encoding="utf-8") as f:
+            json.dump(result, f, ensure_ascii=False, indent=2)
+    except Exception as e:
+        logger.error(f"Failed to write results to {results_path}: {e}")
     return result
 
 async def get_word_ipa(target_word):
