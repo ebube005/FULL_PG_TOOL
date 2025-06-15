@@ -1,0 +1,21 @@
+---
+description: 
+globs: **/frontend/**/*.tsx
+alwaysApply: false
+---
+---
+description: React and TypeScript component best practices
+---
+
+## Functional Components
+- Use function components and hooks instead of class components
+
+## Controlled Components
+- Always use controlled components for forms
+
+## useEffect Cleanup
+- Always clean up side effects in `useEffect`
+
+## React Query
+- Use `react-query` for async state where applicable
+- Cache responses with appropriate stale time

@@ -1,0 +1,24 @@
+---
+description: 
+globs: **/backend/**/*.ts
+alwaysApply: false
+---
+---
+description: AWS Lambda and serverless architecture best practices.
+---
+
+## Function Size
+- Keep Lambda functions small and single-purpose
+- Prefer multiple Lambdas over a large monolith
+
+## Timeout Management
+- Always explicitly define timeouts
+- Fail fast when the expected work cannot be completed in time
+
+## Stateless Logic
+- Avoid local or global state
+- Use external stateful systems
+
+## Cold Start Minimization
+- Bundle dependencies carefully
+- Avoid importing unused packages

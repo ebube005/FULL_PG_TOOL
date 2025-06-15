@@ -20,7 +20,7 @@ import eng_to_ipa as ipa  # Add this import
 ft = FeatureTable()
 distancer = panphon.distance.Distance()
 
-filename = "data/way_analysis.json"
+filename = "data/backend_results.json"
 
 def read_json_file(filename):
     with open(filename, 'r') as file:
@@ -106,6 +106,7 @@ def panphon_international_acceptance (variance, standard):
 
 
 def evaluate_file_variants(target_word, ipa_words):
+    print(target_word, ipa_words)
     standard_ipa = ipa.convert(target_word).strip()
     print(f"Standard IPA for {target_word}: {standard_ipa}")
     results = {}

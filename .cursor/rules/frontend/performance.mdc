@@ -1,0 +1,20 @@
+---
+description: 
+globs: **/frontend/**/*.tsx
+alwaysApply: false
+---
+---
+description: Performance best practices for React and Tailwind projects
+---
+
+## Code Splitting
+- Use dynamic imports (`React.lazy`) for heavy components
+
+## Debounce Inputs
+- Use `use-debounce` for search boxes and fast-typing inputs
+
+## Avoid Re-renders
+- Memoize components with `React.memo` and `useCallback` where needed
+
+## Bundle Optimization
+- Monitor bundle size and use tree-shaking compatible packages

@@ -100,6 +100,15 @@ def analyze():
             "weights": result["weights"]
         }
         
+        # Ensure the final_table is properly formatted
+        formatted_table = {}
+        for ipa, scores in response["final_table"].items():
+            formatted_table[ipa] = {
+                k: float(v) if isinstance(v, (int, float)) else v 
+                for k, v in scores.items()
+            }
+        response["final_table"] = formatted_table
+        
         return jsonify(response)
         
     except Exception as e:

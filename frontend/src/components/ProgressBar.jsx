@@ -1,4 +1,4 @@
-const steps = ["Upload Audio", "Target Word", "Criteria", "Results"];
+const steps = ["Audio Upload", "Target Word", "Criteria", "Results"];
 
 export default function ProgressBar({ currentStep }) {
   return (

@@ -8,3 +8,5 @@ phonemizer
 nltk 
 pdfplumber
 epitran
+pandas
+numpy

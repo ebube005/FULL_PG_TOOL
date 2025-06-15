@@ -1,0 +1,23 @@
+---
+description: 
+globs: **/backend/**/*.ts
+alwaysApply: false
+---
+---
+description: Backend error-handling rules
+---
+
+## Standard Error Wrapper
+- Use a consistent error-handling utility across services
+- Include error codes, messages, and stack traces in logs
+
+## No Silent Failures
+- Never swallow errors silently
+- Always log unexpected errors
+
+## Retry Logic
+- Use exponential backoff for retryable errors (e.g., rate limits)
+
+## Input Validation
+- Validate request payloads before processing
+- Reject invalid inputs early

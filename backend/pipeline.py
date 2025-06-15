@@ -8,8 +8,8 @@ from collections import Counter
 from sklearn.cluster import AgglomerativeClustering
 import requests
 
-API_URL = "https://thebickersteth-voxpreference.hf.space"
-# API_URL = "http://localhost:8000"
+# API_URL = "https://thebickersteth-voxpreference.hf.space"
+API_URL = "http://localhost:8000"
 logger = logging.getLogger(__name__)
 
 def compute_distance_matrix(words):

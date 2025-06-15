@@ -1,0 +1,19 @@
+---
+description: 
+globs: **/frontend/**/*.tsx
+alwaysApply: false
+---
+---
+description: Guidelines for using Tailwind, HeadlessUI, Heroicons, etc.
+---
+
+## Tailwind Consistency
+- Use utility classes over custom CSS
+- Abstract repeated classNames into reusable components
+
+## Accessibility with HeadlessUI
+- Ensure components have `aria-*` attributes and keyboard support
+
+## Heroicons Usage
+- Use SVG-based icons for accessibility and performance
+

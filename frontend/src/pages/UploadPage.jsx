@@ -1,6 +1,5 @@
 import { useRef, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import Header from "../components/Header.jsx";
 import Footer from "../components/Footer.jsx";
 import ProgressBar from "../components/ProgressBar.jsx";
@@ -12,15 +11,7 @@ function AudioUploader() {
   const [error, setError] = useState("");
   const fileInputRef = useRef();
   const navigate = useNavigate();
-  const location = useLocation();
   const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
-  const targetWord = location.state?.targetWord;
-
-  // Redirect if no target word
-  if (!targetWord) {
-    navigate("/");
-    return null;
-  }
 
   function handleDrop(e) {
     e.preventDefault();
@@ -56,22 +47,25 @@ function AudioUploader() {
     return `${(bytes / 1024).toFixed(2)} KB`;
   }
 
-  async function handleUpload() {
+  async function handleNext() {
     if (!audioFile) return;
     setUploading(true);
     setError("");
-    const formData = new FormData();
-    formData.append("audioFile", audioFile);
-    formData.append("target_word", targetWord);
+
     try {
-      const response = await axios.post(`${apiBaseUrl}/analyze`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      console.log("Upload response:", response.data);
-      sessionStorage.setItem("uploadResult", JSON.stringify(response.data));
-      navigate("/criteria");
-    } catch {
-      setError("Upload failed");
+      // Create a temporary URL for the file
+      const fileUrl = URL.createObjectURL(audioFile);
+
+      // Store only the necessary metadata
+      sessionStorage.setItem("audioFileName", audioFile.name);
+      sessionStorage.setItem("audioFileType", audioFile.type);
+      sessionStorage.setItem("audioFileSize", audioFile.size.toString());
+      sessionStorage.setItem("audioFileUrl", fileUrl);
+
+      navigate("/target-word");
+    } catch (err) {
+      setError("Failed to process the audio file. Please try again.");
+      console.error(err);
     } finally {
       setUploading(false);
     }
@@ -163,7 +157,7 @@ function AudioUploader() {
               : "bg-purple-500 opacity-50 cursor-not-allowed"
           }`}
           disabled={!audioFile || uploading}
-          onClick={handleUpload}
+          onClick={handleNext}
         >
           {uploading ? "Uploading..." : "Next"}
         </button>
@@ -179,7 +173,7 @@ export default function UploadPage() {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
       <Header />
-      <ProgressBar currentStep={2} />
+      <ProgressBar currentStep={1} />
       <main className="flex-1 flex items-center justify-center">
         <AudioUploader />
       </main>

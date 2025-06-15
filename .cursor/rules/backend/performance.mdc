@@ -1,0 +1,22 @@
+---
+description: 
+globs: **/backend/**/*.ts
+alwaysApply: false
+---
+---
+description: Backend performance guidelines for serverless and ORM usage
+---
+
+## Lazy Imports
+- Import heavy libraries only when needed
+
+## Optimize DB Calls
+- Minimize number of queries per request
+- Use `select` and `include` in Prisma to fetch only required fields
+
+## Concurrency
+- Use async/await properly to maximize concurrency
+- Avoid blocking synchronous calls
+
+## Monitor Lambda Metrics
+- Track cold starts, memory usage, and execution time

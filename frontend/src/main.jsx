@@ -12,8 +12,8 @@ ReactDOM.createRoot(root).render(
   <StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<TargetWordPage />} />
-        <Route path="/upload" element={<UploadPage />} />
+        <Route path="/" element={<UploadPage />} />
+        <Route path="/target-word" element={<TargetWordPage />} />
         <Route path="/criteria" element={<CriteriaPage />} />
         <Route path="/results" element={<ResultsPage />} />
       </Routes>

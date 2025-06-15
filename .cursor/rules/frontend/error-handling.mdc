@@ -1,0 +1,18 @@
+---
+description: 
+globs: **/frontend/**/*.tsx
+alwaysApply: false
+---
+---
+description: Error boundaries and UI error-handling best practices
+---
+
+## Error Boundaries
+- Use error boundaries to wrap high-risk components
+
+## Toast/Error UI
+- Show user-friendly error messages using toast or modals
+
+## API Errors
+- Handle Axios/React Query errors gracefully
+- Provide fallbacks or retry options

@@ -1,0 +1,22 @@
+---
+description: 
+globs: **/backend/**/*.ts
+alwaysApply: false
+---
+---
+description: Backend security rules for Node.js, Lambda, and Prisma
+---
+
+## Secrets Handling
+- Never hardcode secrets
+- Use environment variables managed securely 
+
+## SQL Injection Protection
+- Always use Prisma’s parameterized queries
+- Never interpolate raw values into SQL strings
+
+## Least Privilege IAM
+- Grant Lambda functions the minimum required permissions
+
+## Input Sanitization
+- Sanitize all incoming data, especially user-generated content

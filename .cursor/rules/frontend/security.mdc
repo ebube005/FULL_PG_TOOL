@@ -1,0 +1,20 @@
+---
+description: 
+globs: **/frontend/**/*.tsx
+alwaysApply: false
+---
+---
+description: Frontend security rules
+---
+
+## HTML Injection
+- Always sanitize HTML content before rendering
+
+## Secure Local Storage
+- Avoid storing tokens in `localStorage` or `sessionStorage`
+
+## CSP Compliance
+- Ensure third-party scripts do not violate Content Security Policy
+
+## Dependency Hygiene
+- Keep all frontend libraries up-to-date and monitor known vulnerabilities

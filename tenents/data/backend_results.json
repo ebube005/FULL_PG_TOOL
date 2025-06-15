@@ -1,0 +1,20 @@
+{
+  "success": true,
+  "ipa_variants": [
+    {
+      "ipa": "θˈɪŋk",
+      "frequency": 1.0,
+      "fraction": 1.0
+    }
+  ],
+  "confusion_matrix": {
+    "labels": [
+      "θˈɪŋk"
+    ],
+    "matrix": [
+      [
+        1.0
+      ]
+    ]
+  }
+}
