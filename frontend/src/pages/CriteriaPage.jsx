@@ -108,8 +108,8 @@ export default function CriteriaPage() {
         "analysisResults",
         JSON.stringify({
           targetWord: ipa.word,
-          bestTranscription: data.best_transcription,
-          finalTable: data.final_table,
+          bestTranscription: data.bestTranscription,
+          finalTable: data.finalTable,
         })
       );
 

@@ -90,11 +90,13 @@ export default function ResultsPage() {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <p className="text-gray-600">Word:</p>
-                <p className="text-xl font-medium">{results.targetWord}</p>
+                <p className="text-xl text-purple-700 font-medium">
+                  {results.targetWord}
+                </p>
               </div>
               <div>
                 <p className="text-gray-600">Best IPA Transcription:</p>
-                <p className="text-xl font-medium">
+                <p className="text-xl text-purple-700 font-medium">
                   {results.bestTranscription}
                 </p>
               </div>
@@ -150,10 +152,10 @@ export default function ResultsPage() {
 
           {/* Best Transcription Section */}
           <div className="bg-white rounded-lg shadow-lg p-6">
-            <h2 className="text-xl font-semibold mb-4">
+            <h2 className="text-xl text-purple-700 font-semibold mb-4">
               Recommended Pronunciation
             </h2>
-            <p className="text-xl">
+            <p className="text-xl text-gray-600">
               Based on your preference grammar, the preferred pronunciation is:{" "}
               <span className="font-bold text-purple-700">
                 {results.bestTranscription}

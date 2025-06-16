@@ -470,14 +470,12 @@ for tenet in tenet_scores:
 score_table = build_score_table(tenet_scores)
 
 print("\n Operability Table (Raw Scores):")
+# Set display options to show all columns
+pd.set_option('display.max_columns', None)
+pd.set_option('display.width', None)
 print(score_table)
 output_filename = "operability_table.csv"
 score_table.to_csv(output_filename, encoding='utf-8')
-
-# print(f"\n Operability table saved as: {output_filename}")
-# from google.colab import files
-# files.download(output_filename)
-
 
 # === AHP CALCULATION ===
 
