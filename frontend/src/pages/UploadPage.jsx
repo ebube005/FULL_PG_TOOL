@@ -101,7 +101,7 @@ function AudioUploader() {
             <div className="w-[175px] h-10 flex items-center justify-center">
               <button
                 type="button"
-                className="rounded-full bg-purple-500 px-6 h-10 flex items-center justify-center text-black font-medium text-base hover:bg-purple-700 transition-colors"
+                className="rounded-full bg-purple-500 px-6 h-10 flex items-center justify-center text-white font-medium text-base hover:bg-purple-700 transition-colors"
                 onClick={handleBrowseClick}
               >
                 Browse Files
@@ -151,7 +151,7 @@ function AudioUploader() {
       <div className="flex flex-col gap-2">
         <button
           type="button"
-          className={`w-28 h-10 rounded-full text-black font-medium self-end transition-colors ${
+          className={`w-28 h-10 rounded-full text-white font-medium self-end transition-colors ${
             audioFile
               ? "bg-purple-500 hover:bg-purple-700"
               : "bg-purple-500 opacity-50 cursor-not-allowed"

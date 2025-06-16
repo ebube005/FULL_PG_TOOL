@@ -4,6 +4,7 @@ import axios from "axios";
 import Header from "../components/Header.jsx";
 import Footer from "../components/Footer.jsx";
 import ProgressBar from "../components/ProgressBar.jsx";
+import BackButton from "../components/BackButton.jsx";
 
 export default function TargetWordPage() {
   const [word, setWord] = useState("");
@@ -17,7 +18,7 @@ export default function TargetWordPage() {
   useEffect(() => {
     const audioFileUrl = sessionStorage.getItem("audioFileUrl");
     if (!audioFileUrl) {
-      navigate("/");
+      navigate("/upload");
     }
   }, [navigate]);
 
@@ -105,6 +106,7 @@ export default function TargetWordPage() {
       <ProgressBar currentStep={2} />
       <main className="flex-1 flex items-center justify-center">
         <div className="max-w-xl w-full bg-white rounded-2xl shadow p-10 flex flex-col gap-8">
+          <BackButton />
           <div className="flex flex-col gap-2">
             <label
               htmlFor="word-input"
@@ -131,7 +133,7 @@ export default function TargetWordPage() {
           <div className="flex flex-col gap-2">
             <button
               type="button"
-              className={`w-28 h-10 rounded-full text-black font-medium text-base self-end transition-colors ${
+              className={`w-28 h-10 rounded-full text-white font-medium text-base self-end transition-colors ${
                 word.trim() && !loading
                   ? "bg-purple-500 hover:bg-purple-700"
                   : "bg-purple-500 opacity-50 cursor-not-allowed"

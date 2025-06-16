@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Header.jsx";
 import Footer from "../components/Footer.jsx";
 import ProgressBar from "../components/ProgressBar.jsx";
+import BackButton from "../components/BackButton.jsx";
 
 const criteriaList = [
   {
@@ -126,7 +127,8 @@ export default function CriteriaPage() {
       <Header />
       <ProgressBar currentStep={3} />
       <main className="flex-1 flex items-center justify-center">
-        <div className="max-w-2xl w-full bg-white rounded-2xl shadow p-10 flex flex-col gap-8">
+        <div className="max-w-xl w-full bg-white rounded-2xl shadow p-10 flex flex-col gap-8">
+          <BackButton />
           {error && (
             <div
               className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded relative"

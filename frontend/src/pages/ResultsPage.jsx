@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../components/Header.jsx";
 import Footer from "../components/Footer.jsx";
 import ProgressBar from "../components/ProgressBar.jsx";
+import BackButton from "../components/BackButton.jsx";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 
 export default function ResultsPage() {
   const [results, setResults] = useState(null);
@@ -24,6 +27,88 @@ export default function ResultsPage() {
       console.error("Error parsing results:", err);
     }
   }, []);
+
+  // Helper to convert ArrayBuffer to base64
+  function arrayBufferToBase64(buffer) {
+    let binary = "";
+    const bytes = new Uint8Array(buffer);
+    const len = bytes.byteLength;
+    for (let i = 0; i < len; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    return window.btoa(binary);
+  }
+
+  const exportToPDF = async () => {
+    // Fetch the DejaVuSans font as base64
+    const fontUrl = "/DejaVuSans.ttf";
+    const response = await fetch(fontUrl);
+    const fontBuffer = await response.arrayBuffer();
+    const fontBase64 = arrayBufferToBase64(fontBuffer);
+
+    // Register the font with jsPDF
+    const doc = new jsPDF({
+      orientation: "landscape",
+      unit: "mm",
+      format: "a4",
+    });
+    doc.addFileToVFS("DejaVuSans.ttf", fontBase64);
+    doc.addFont("DejaVuSans.ttf", "DejaVuSans", "normal");
+    doc.setFont("DejaVuSans");
+
+    // Add title
+    doc.setFontSize(20);
+    doc.text("Analysis Results", 20, 20);
+
+    // Add timestamp
+    doc.setFontSize(12);
+    doc.text(`Generated on: ${new Date().toLocaleString()}`, 20, 30);
+
+    // Add target word information
+    const targetWordData = JSON.parse(
+      sessionStorage.getItem("targetWordIpaResult")
+    );
+    doc.setFontSize(14);
+    doc.text(`Target Word: ${targetWordData.word}`, 20, 40);
+    doc.text(`IPA: ${targetWordData.ipa}`, 20, 50);
+
+    // Convert final table to array for PDF
+    const tableData = Object.entries(results.finalTable || {}).map(
+      ([ipa, scores]) => [ipa, ...Object.values(scores)]
+    );
+
+    // Get headers from the first row
+    const headers = [
+      "IPA",
+      ...Object.keys(
+        results.finalTable[Object.keys(results.finalTable)[0]] || {}
+      ),
+    ];
+
+    autoTable(doc, {
+      startY: 60,
+      head: [headers],
+      body: tableData,
+      theme: "grid",
+      styles: {
+        fontSize: 10,
+        font: "DejaVuSans",
+        cellPadding: 3,
+      },
+      headStyles: {
+        fillColor: [128, 0, 128],
+        textColor: [255, 255, 255],
+        fontStyle: "normal",
+      },
+      columnStyles: {
+        0: { cellWidth: 18 }, // IPA column smaller
+      },
+      margin: { left: 20, right: 20 },
+    });
+
+    // Save the PDF
+    doc.save("analysis-results.pdf");
+  };
 
   if (error) {
     return (
@@ -80,8 +165,31 @@ export default function ResultsPage() {
       <ProgressBar currentStep={4} />
       <main className="flex-1 flex items-center justify-center py-8">
         <div className="max-w-4xl w-full bg-white rounded-2xl shadow p-10 flex flex-col gap-8">
+          <BackButton />
           <div className="text-2xl font-bold text-purple-700 text-center">
             Results
+          </div>
+
+          {/* Add Export PDF button */}
+          <div className="flex justify-end">
+            <button
+              onClick={exportToPDF}
+              className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded flex items-center gap-2"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v3.586l-1.293-1.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V8z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              Export PDF
+            </button>
           </div>
 
           {/* Target Word Section */}

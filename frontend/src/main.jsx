@@ -1,5 +1,6 @@
 import { StrictMode } from "react";
 import "./index.css";
+import LandingPage from "./pages/LandingPage.jsx";
 import UploadPage from "./pages/UploadPage.jsx";
 import TargetWordPage from "./pages/TargetWordPage.jsx";
 import CriteriaPage from "./pages/CriteriaPage.jsx";
@@ -12,7 +13,8 @@ ReactDOM.createRoot(root).render(
   <StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<UploadPage />} />
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/upload" element={<UploadPage />} />
         <Route path="/target-word" element={<TargetWordPage />} />
         <Route path="/criteria" element={<CriteriaPage />} />
         <Route path="/results" element={<ResultsPage />} />
