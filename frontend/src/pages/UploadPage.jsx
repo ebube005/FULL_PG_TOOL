@@ -151,7 +151,7 @@ function AudioUploader() {
       <div className="flex flex-col gap-2">
         <button
           type="button"
-          className={`w-28 h-10 rounded-full text-white font-medium self-end transition-colors ${
+          className={`w-28 h-10 rounded-full text-black font-medium self-end transition-colors ${
             audioFile
               ? "bg-purple-500 hover:bg-purple-700"
               : "bg-purple-500 opacity-50 cursor-not-allowed"

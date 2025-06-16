@@ -7,7 +7,7 @@ const BackButton = () => {
   return (
     <button
       onClick={() => navigate(-1)}
-      className="w-28 h-10 flex items-center justify-center gap-2 rounded-full bg-purple-500 text-white font-medium text-base transition-all duration-200 shadow-sm hover:bg-purple-700 hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-purple-300"
+      className="w-28 h-10 flex items-center justify-center gap-2 rounded-full bg-purple-500 text-black font-medium text-base transition-all duration-200 shadow-sm hover:bg-purple-700 hover:scale-105 active:scale-95 focus:outline-none focus:ring-2 focus:ring-purple-300"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

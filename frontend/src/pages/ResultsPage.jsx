@@ -72,6 +72,16 @@ export default function ResultsPage() {
     doc.text(`Target Word: ${targetWordData.word}`, 20, 40);
     doc.text(`IPA: ${targetWordData.ipa}`, 20, 50);
 
+    // Add best pronunciation statement
+    doc.setFontSize(16);
+    doc.setTextColor(128, 0, 128); // Purple color
+    doc.text(
+      `The best pronunciation of "${targetWordData.word}" is: ${results.bestTranscription}`,
+      20,
+      65
+    );
+    doc.setTextColor(0, 0, 0); // Reset to black
+
     // Convert final table to array for PDF
     const tableData = Object.entries(results.finalTable || {}).map(
       ([ipa, scores]) => [ipa, ...Object.values(scores)]
@@ -86,7 +96,7 @@ export default function ResultsPage() {
     ];
 
     autoTable(doc, {
-      startY: 60,
+      startY: 75,
       head: [headers],
       body: tableData,
       theme: "grid",
@@ -174,7 +184,7 @@ export default function ResultsPage() {
           <div className="flex justify-end">
             <button
               onClick={exportToPDF}
-              className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded flex items-center gap-2"
+              className="bg-purple-500 hover:bg-purple-700 text-black font-bold py-2 px-4 rounded flex items-center gap-2"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

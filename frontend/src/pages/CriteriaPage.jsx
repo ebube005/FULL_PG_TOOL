@@ -182,7 +182,7 @@ export default function CriteriaPage() {
           <div className="flex flex-col gap-2">
             <button
               type="button"
-              className={`w-36 h-10 rounded-full text-white font-medium text-base self-end transition-colors ${
+              className={`w-36 h-10 rounded-full text-black font-medium text-base self-end transition-colors ${
                 isLoading
                   ? "bg-purple-300 cursor-not-allowed"
                   : "bg-purple-500 hover:bg-purple-700"
