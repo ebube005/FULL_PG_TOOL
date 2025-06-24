@@ -6,10 +6,15 @@ import pandas as pd
 import Levenshtein
 from collections import Counter
 from sklearn.cluster import AgglomerativeClustering
-import requests
+import httpx
+import asyncio
+import aiofiles
+import os
 
-# API_URL = "https://thebickersteth-voxpreference.hf.space"
-API_URL = "http://localhost:8000"
+# Use environment variables for service URLs in containerized environment
+VOXPREFERENCE_URL = os.getenv("VOXPREFERENCE_URL", "http://localhost:8000")
+TENENTS_URL = os.getenv("TENENTS_URL", "http://localhost:5000")
+
 logger = logging.getLogger(__name__)
 
 def compute_distance_matrix(words):
@@ -54,39 +59,56 @@ def generate_confusion_matrix(ipa_variants):
 
 async def analyze_audio_and_word(audioFile, target_word):
     logger.info("Starting analysis pipeline")
+    loop = asyncio.get_running_loop()
+
     with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as tmp:
-        content = await audioFile.read()
-        tmp.write(content)
         tmp_path = tmp.name
-    logger.info(f"Saved uploaded audio to {tmp_path}")
+    
     try:
-        with open(tmp_path, "rb") as f:
-            files = {"audioFile": f}
+        content = await audioFile.read()
+        async with aiofiles.open(tmp_path, "wb") as f:
+            await f.write(content)
+        logger.info(f"Saved uploaded audio to {tmp_path}")
+
+        async with aiofiles.open(tmp_path, "rb") as f:
+            files = {"audioFile": await f.read()}
             logger.info("Sending audio to external API...")
-            response = requests.post(API_URL, files=files)
+            async with httpx.AsyncClient() as client:
+                response = await client.post(VOXPREFERENCE_URL, files=files)
+        
         if response.status_code != 200:
             logger.error(f"API error {response.status_code}: {response.text}")
             return {"success": False, "error": f"API error {response.status_code}: {response.text}"}
+        
         data = response.json()
+
     except Exception as e:
         logger.exception(f"Failed to fetch data: {e}")
         return {"success": False, "error": str(e)}
+
     words = [seg['text'].lower() for seg in data.get('segments', []) if seg.get('text')]
-    word_cluster_map = cluster_words(words)
+    
+    word_cluster_map = await loop.run_in_executor(None, cluster_words, words)
+    
     if target_word not in word_cluster_map:
         logger.error(f"'{target_word}' not found in dataset.")
         return {"success": False, "error": f"'{target_word}' not found in dataset."}
+
     target_cluster = word_cluster_map[target_word]
     ipa_variants = [
         seg['ipa'] for seg in data.get('segments', [])
         if seg.get('ipa') and word_cluster_map.get(seg['text'].lower()) == target_cluster
     ]
+
     if not ipa_variants:
         logger.error(f"No IPA variants found for cluster containing '{target_word}'.")
         return {"success": False, "error": f"No IPA variants found for cluster containing '{target_word}'."}
+
     variant_counts = Counter(ipa_variants)
     ipa_list, freq_dict = format_output(variant_counts)
-    confusion = generate_confusion_matrix(ipa_list)
+    
+    confusion = await loop.run_in_executor(None, generate_confusion_matrix, ipa_list)
+    
     result = {
         "success": True,
         "ipa_variants": [
@@ -98,10 +120,10 @@ async def analyze_audio_and_word(audioFile, target_word):
             "matrix": confusion.values.tolist()
         },
     }
-    results_path = "../tenents/data/backend_results.json"
+    results_path = "/app/tenents_data/backend_results.json"
     try:
-        with open(results_path, "w", encoding="utf-8") as f:
-            json.dump(result, f, ensure_ascii=False, indent=2)
+        async with aiofiles.open(results_path, "w", encoding="utf-8") as f:
+            await f.write(json.dumps(result, ensure_ascii=False, indent=2))
     except Exception as e:
         logger.error(f"Failed to write results to {results_path}: {e}")
     return result
@@ -109,7 +131,8 @@ async def analyze_audio_and_word(audioFile, target_word):
 async def get_word_ipa(target_word):
     logger.info(f"Fetching IPA for word: {target_word}")
     try:
-        response = requests.post(f"{API_URL}/ipa", data={"word": target_word})
+        async with httpx.AsyncClient() as client:
+            response = await client.post(f"{VOXPREFERENCE_URL}/ipa", data={"word": target_word})
         if response.status_code != 200:
             logger.error(f"IPA API error {response.status_code}: {response.text}")
             return {"success": False, "ipa_error": f"IPA API error {response.status_code}: {response.text}"}

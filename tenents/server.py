@@ -8,7 +8,7 @@ import subprocess
 app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
-DATA_DIR = "data"
+DATA_DIR = os.getenv("DATA_DIR", "/app/data")
 os.makedirs(DATA_DIR, exist_ok=True)
 
 @app.route('/save-rankings', methods=['POST'])

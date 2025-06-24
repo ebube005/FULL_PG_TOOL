@@ -6,3 +6,5 @@ pandas
 Levenshtein
 scikit-learn
 requests
+httpx
+aiofiles

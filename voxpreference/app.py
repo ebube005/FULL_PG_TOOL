@@ -98,6 +98,7 @@ async def transcribe(audioFile: UploadFile = File(...)):
                     "ipa": ipa,
                     "ipa_error": ipa_error
                 })
+        logger.info(f"Final result: {segments, transcription, duration}")
         return JSONResponse(
             status_code=200,
             content={

@@ -1,0 +1,60 @@
+version: "3.8"
+
+services:
+  # Main Backend Service (FastAPI)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8001:8000"
+    environment:
+      - VOXPREFERENCE_URL=http://voxpreference:8000
+      - TENENTS_URL=http://tenents:5000
+    depends_on:
+      - voxpreference
+      - tenents
+    networks:
+      - backend-network
+    volumes:
+      - ./tenents/data:/app/tenents_data
+    restart: unless-stopped
+
+  # Voxpreference Service (FastAPI)
+  voxpreference:
+    build:
+      context: ./voxpreference
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - LOG_LEVEL=INFO
+      - HF_HOME=/app/hf_home
+    networks:
+      - backend-network
+    volumes:
+      - voxpreference_cache:/app/hf_home
+    restart: unless-stopped
+
+  # Tenents Service (Flask)
+  tenents:
+    build:
+      context: ./tenents
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+      - FLASK_DEBUG=0
+    networks:
+      - backend-network
+    volumes:
+      - ./tenents/data:/app/data
+    restart: unless-stopped
+
+networks:
+  backend-network:
+    driver: bridge
+
+volumes:
+  voxpreference_cache:

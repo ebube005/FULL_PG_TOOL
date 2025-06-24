@@ -101,7 +101,7 @@ function AudioUploader() {
             <div className="w-[175px] h-10 flex items-center justify-center">
               <button
                 type="button"
-                className="rounded-full bg-purple-500 px-6 h-10 flex items-center justify-center text-white font-medium text-base hover:bg-purple-700 transition-colors"
+                className="rounded-full bg-purple-500 px-6 h-10 flex items-center justify-center text-black font-medium text-base hover:bg-purple-700 transition-colors"
                 onClick={handleBrowseClick}
               >
                 Browse Files
