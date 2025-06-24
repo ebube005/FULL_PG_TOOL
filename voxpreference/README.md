@@ -6,13 +6,6 @@ colorTo: gray
 sdk: docker
 pinned: false
 short_description: speech recognition using nigerian english
----
-
-
-Read file: README.md
-
-Search files...
-Here is an extremely detailed `README.md` for your project, covering all aspects from what it does, how to use it, deployment, API, and more:
 
 ---
 
